@@ -1,0 +1,32 @@
+{
+  "name": "open-chat-back",
+  "version": "1.0.0",
+  "description": "Servidor backend em TypeScript para editor colaborativo via WebSocket",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"node --loader ts-node/esm src/server.ts\""
+  },
+  "keywords": [
+    "chat",
+    "realtime",
+    "typescript",
+    "socket.io",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.5.2",
+    "@types/socket.io": "^3.0.1",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
