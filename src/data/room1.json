@@ -3,16 +3,15 @@
   "blocks": [
     {
       "id": 1758504791435,
-      "text": "aba 1"
-    },
-    {
-      "id": 1758507583290,
-      "text": "aba 123"
-    },
-    {
-      "id": 1758507663800,
-      "text": ""
+      "text": "teste"
     }
   ],
-  "cursors": []
+  "cursors": [
+    {
+      "blockId": 1758504791435,
+      "position": 5,
+      "userId": "3d4bf84e-7efd-4271-8c43-6bee1dc6cfbe",
+      "color": "#e6194b"
+    }
+  ]
 }
