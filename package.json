@@ -5,7 +5,9 @@
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
-    "dev": "node --loader ts-node/esm src/server.ts"
+    "build": "tsc",
+    "dev": "node --loader ts-node/esm src/server.ts",
+    "start": "node dist/server.js"
   },
   "keywords": [
     "chat",
