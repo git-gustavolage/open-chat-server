@@ -9,8 +9,5 @@ services:
     ports:
       - "9001:9001"
     volumes:
-      # monta apenas a pasta dist/data como volume persistente
-      - app-data:/app/dist/data
-
-volumes:
-  app-data:
+      # Mapeia a pasta "data" do host para dentro do container
+      - ./data:/app/dist/data

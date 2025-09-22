@@ -1,4 +1,3 @@
-
 FROM node:20 AS builder
 WORKDIR /app
 
@@ -17,5 +16,4 @@ RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 9001
-
 CMD ["node", "dist/server.js"]
