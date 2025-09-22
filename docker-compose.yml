@@ -3,10 +3,14 @@ version: "3.9"
 services:
   app:
     build: .
+    container_name: my-node-app
+    working_dir: /app
+    command: node dist/server.js
     ports:
       - "9001:9001"
     volumes:
-      - ./src/data:/app/src/data
-      - ./:/app
-    environment:
-      NODE_ENV: development
+      # monta apenas a pasta dist/data como volume persistente
+      - app-data:/app/dist/data
+
+volumes:
+  app-data:
