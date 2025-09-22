@@ -9,6 +9,6 @@ RUN npm install -g ts-node typescript
 
 COPY . .
 
-EXPOSE 3001
+EXPOSE 9001
 
 CMD ["npm", "run", "dev"]
