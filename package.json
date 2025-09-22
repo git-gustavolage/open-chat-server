@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"node --loader ts-node/esm src/server.ts\""
+    "dev": "node --loader ts-node/esm src/server.ts"
   },
   "keywords": [
     "chat",
