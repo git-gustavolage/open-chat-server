@@ -1,6 +1,6 @@
 import express from "express";
-import { RoomRepositoryFs } from "../../repositories/RoomRepositoryFs.ts";
-import validateRoomId from "../../validators/validateRoomId.ts";
+import { RoomRepositoryFs } from "../../repositories/RoomRepositoryFs.js";
+import validateRoomId from "../../validators/validateRoomId.js";
 
 const router = express.Router();
 const repo = new RoomRepositoryFs();

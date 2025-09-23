@@ -1,10 +1,10 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import routes from "./routes/v1/index.ts";
+import routes from "./routes/v1/index.js";
 import dotenv from 'dotenv'
-import { RoomRepositoryFs } from "./repositories/RoomRepositoryFs.ts";
-import { RoomManager } from "./services/RoomManager.ts";
+import { RoomRepositoryFs } from "./repositories/RoomRepositoryFs.js";
+import { RoomManager } from "./services/RoomManager.js";
 
 dotenv.config();
 

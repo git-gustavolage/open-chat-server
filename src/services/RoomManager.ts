@@ -1,5 +1,5 @@
-import { RoomRepositoryFs } from "../repositories/RoomRepositoryFs.ts";
-import { Room } from "../types.ts";
+import { RoomRepositoryFs } from "../repositories/RoomRepositoryFs.js";
+import { Room } from "../types.js";
 
 export class RoomManager {
     private repo: RoomRepositoryFs;

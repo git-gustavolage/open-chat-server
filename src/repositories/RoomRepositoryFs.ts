@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { DATA_DIR } from "../../globals.ts";
-import { Room } from "../types.ts";
+import { DATA_DIR } from "../../globals.js";
+import { Room } from "../types.js";
 
 export class RoomRepositoryFs {
     private filePath(roomId: string) {

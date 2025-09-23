@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import roomRoute from "./roomRoute.ts";
+import roomRoute from "./roomRoute.js";
 
 const router = Router();
 
