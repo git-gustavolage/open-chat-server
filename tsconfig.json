@@ -5,6 +5,7 @@
         "outDir": "./dist",
         "strict": true,
         "esModuleInterop": true,
+        "allowImportingTsExtensions": true,
         "moduleResolution": "node16"
     }
 }

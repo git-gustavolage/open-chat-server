@@ -4,6 +4,7 @@ import { Server } from "socket.io";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
+import routes from "./routes/v1/index.ts";
 
 interface Block {
     id: number;
@@ -39,6 +40,8 @@ const io = new Server(server, {
 });
 
 app.use(express.json());
+
+app.use("/api/v1/", routes);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -90,42 +93,43 @@ function assignColor(userId: string, room: Room): string {
 
 const rooms: Record<string, Room> = {};
 
-app.post("/rooms", (req, res) => {
-    const { roomId } = req.body;
-    console.log(`POST /rooms received with roomId: ${roomId}`);
 
-    if (!roomId || typeof roomId !== "string") {
-        console.warn(`Invalid roomId in POST /rooms: ${roomId}`);
-        return res.status(400).json({ error: "roomId is required and must be a string" });
-    }
+// app.post("/rooms", (req, res) => {
+//     const { roomId } = req.body;
+//     console.log(`POST /rooms received with roomId: ${roomId}`);
 
-    if (rooms[roomId] || fs.existsSync(path.join(DATA_DIR, `${roomId}.json`))) {
-        console.warn(`Room ${roomId} already exists`);
-        return res.status(409).json({ error: `Room ${roomId} already exists` });
-    }
+//     if (!roomId || typeof roomId !== "string") {
+//         console.warn(`Invalid roomId in POST /rooms: ${roomId}`);
+//         return res.status(400).json({ error: "roomId is required and must be a string" });
+//     }
 
-    rooms[roomId] = { id: roomId, blocks: [], cursors: [] };
-    saveRoom(rooms[roomId]);
-    console.log(`Created new room ${roomId}`);
-    res.status(201).json({ message: `Room ${roomId} created successfully` });
-});
+//     if (rooms[roomId] || fs.existsSync(path.join(DATA_DIR, `${roomId}.json`))) {
+//         console.warn(`Room ${roomId} already exists`);
+//         return res.status(409).json({ error: `Room ${roomId} already exists` });
+//     }
 
-app.get("/rooms/:roomId", (req, res) => {
-    const { roomId } = req.params;
-    console.log(`GET /rooms/${roomId} received`);
+//     rooms[roomId] = { id: roomId, blocks: [], cursors: [] };
+//     saveRoom(rooms[roomId]);
+//     console.log(`Created new room ${roomId}`);
+//     res.status(201).json({ message: `Room ${roomId} created successfully` });
+// });
 
-    if (!rooms[roomId]) {
-        rooms[roomId] = loadRoom(roomId);
-    }
+// app.get("/rooms/:roomId", (req, res) => {
+//     const { roomId } = req.params;
+//     console.log(`GET /rooms/${roomId} received`);
 
-    if (!rooms[roomId]) {
-        console.warn(`Room ${roomId} not found`);
-        return res.status(404).json({ error: `Room ${roomId} not found` });
-    }
+//     if (!rooms[roomId]) {
+//         rooms[roomId] = loadRoom(roomId);
+//     }
 
-    console.log(`Returning state for room ${roomId}:`, JSON.stringify(rooms[roomId], null, 2));
-    res.status(200).json(rooms[roomId]);
-});
+//     if (!rooms[roomId]) {
+//         console.warn(`Room ${roomId} not found`);
+//         return res.status(404).json({ error: `Room ${roomId} not found` });
+//     }
+
+//     console.log(`Returning state for room ${roomId}:`, JSON.stringify(rooms[roomId], null, 2));
+//     res.status(200).json(rooms[roomId]);
+// });
 
 io.on("connection", (socket) => {
     const { roomId, userId } = socket.handshake.query as { roomId: string; userId: string };
