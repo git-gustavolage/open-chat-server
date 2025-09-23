@@ -1,35 +1,32 @@
 import express from "express";
-import createRoomAction from "../../actions/createRoomAction.ts";
-import loadRoomAction from "../../actions/loadRoom.ts";
+import { RoomRepositoryFs } from "../../repositories/RoomRepositoryFs.ts";
+import validateRoomId from "../../validators/validateRoomId.ts";
 
 const router = express.Router();
+const repo = new RoomRepositoryFs();
 
-router.post("/", (req: express.Request, res: express.Response) => {
-    const { roomId } = req.body;
+router.post("/", validateRoomId, async (req: express.Request, res: express.Response) => {
+    try {
+        const { roomId } = req.body;
 
-    if (!roomId || typeof roomId !== "string") {
-        console.warn(`[WARN] Invalid roomId in POST /rooms: ${roomId}`);
-        return res.status(400).json({ error: "roomId is required and must be a string" });
+        const room = await repo.create(roomId);
+
+        return res.status(201).json({ message: `Room ${roomId} created successfully`, data: room });
+    } catch (err: any) {
+        return res.status(400).json({ error: err.message });
     }
-
-    const room = createRoomAction(roomId);
-    if (!room) return res.status(500).json({ error: "An error ocorred while creating a new room" });
-
-    res.status(201).json({ message: `Room ${roomId} created successfully` });
 });
 
-router.get("/:roomId", (req: express.Request, res: express.Response) => {
-    const { roomId } = req.params;
+router.get("/:roomId", async (req: express.Request, res: express.Response) => {
+    try {
+        const { roomId } = req.params;
 
-    if (!roomId || typeof roomId !== "string") {
-        console.warn(`[WARN] Invalid roomId in GET /rooms: ${roomId}`);
-        return res.status(400).json({ error: "roomId is required and must be a string" });
+        const data = await repo.load(roomId);
+
+        return res.status(200).json({ data: data });
+    } catch (err: any) {
+        return res.status(400).json({ error: err.message });
     }
-
-    const data = loadRoomAction(roomId);
-    if (!data) return res.status(500).json({ error: "An error ocorred while retriving room data" });
-
-    res.status(200).json({ data: data });
 });
 
 export default router;
