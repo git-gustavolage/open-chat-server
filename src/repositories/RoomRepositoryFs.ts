@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { DATA_DIR } from "../../globals.js";
+import { DATA_DIR } from "../globals.js";
 import { Room } from "../types.js";
 
 export class RoomRepositoryFs {

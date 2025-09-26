@@ -3,11 +3,12 @@ version: "3.9"
 services:
   app:
     build: .
-    container_name: my-node-app
+    container_name: open-back
     working_dir: /app
     command: node dist/server.js
     ports:
       - "9001:9001"
     volumes:
-      # Mapeia a pasta "data" do host para dentro do container
-      - ./data:/app/dist/data
+      - ./data:/app/data
+    env_file:
+      - .env

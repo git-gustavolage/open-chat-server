@@ -10,10 +10,14 @@ export class RoomManager {
         this.rooms = new Map();
     }
 
-    async getRoom(roomId: string): Promise<Room> {
+    async getRoom(roomId: string): Promise<Room|null> {
         if (!this.rooms.has(roomId)) {
-            const room = await this.repo.load(roomId);
-            this.rooms.set(roomId, room);
+            try {
+                const room = await this.repo.load(roomId);
+                this.rooms.set(roomId, room);
+            } catch (err: any) {
+                return null;
+            }
         }
         return this.rooms.get(roomId)!;
     }
