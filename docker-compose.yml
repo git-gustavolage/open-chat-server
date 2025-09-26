@@ -3,7 +3,7 @@ version: "3.9"
 services:
   app:
     build: .
-    container_name: open-back
+    container_name: open-server
     working_dir: /app
     command: node dist/server.js
     ports:

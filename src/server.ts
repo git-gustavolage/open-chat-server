@@ -5,7 +5,7 @@ import routes from "./routes/v1/index.js";
 import dotenv from 'dotenv'
 import { RoomRepositoryFs } from "./repositories/RoomRepositoryFs.js";
 import { RoomManager } from "./services/RoomManager.js";
-import { ActionPerformed, Cursor, Register, Room } from "./types.js";
+import { ActionPerformed, Register, Room } from "./types.js";
 import { updateBlocks } from "./actions/updateBlocks.js";
 import { createBlocks } from "./actions/createBlocks.js";
 import { deleteBlocks } from "./actions/deleteBlocks.js";
@@ -39,7 +39,7 @@ io.on("connection", async (socket) => {
         socket.disconnect();
         return;    
     }
-    
+
     socket.join(roomId);
 
     async function cleanDisconnectedCursors(roomId: string, room: Room) {
