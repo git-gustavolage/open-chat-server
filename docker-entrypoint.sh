@@ -1,3 +1,8 @@
 #!/bin/sh
-chown -R nodeapp:nodeapp /app/data
+set -e
+
+if [ -d "/app/data" ]; then
+    chown -R nodeapp:nodeapp /app/data
+fi
+
 exec "$@"
