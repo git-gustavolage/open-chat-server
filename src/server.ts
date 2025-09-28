@@ -171,7 +171,7 @@ io.on("connection", async (socket) => {
         socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch });
     });
 
-    socket.on("arrowChange", async ({ cursor }: ActionPerformed) => {        
+    socket.on("arrowChange", async ({ cursor }: ActionPerformed) => {
         cursor = updateCursors(room, cursor, userId);
 
         await roomManager.saveRoom(room);
