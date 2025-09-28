@@ -81,7 +81,7 @@ io.on("connection", async (socket) => {
         }
 
         socket.emit("init", { data });
-    })
+    });
 
     socket.on("change", async ({ cursor, target_id, register }: ActionPerformed) => {
 
@@ -169,6 +169,14 @@ io.on("connection", async (socket) => {
         }
 
         socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch });
+    });
+
+    socket.on("arrowChange", async ({ cursor }: ActionPerformed) => {        
+        cursor = updateCursors(room, cursor, userId);
+
+        await roomManager.saveRoom(room);
+
+        socket.to(roomId).emit("change", { updatedCursors: [cursor] });
     });
 
     socket.on("disconnect", async () => {
