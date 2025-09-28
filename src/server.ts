@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import routes from "./routes/v1/index.js";
@@ -14,6 +15,7 @@ import { updateCursors } from "./actions/updateCursors.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use("/api/v1/", routes);
 
 const server = http.createServer(app);
@@ -29,6 +31,7 @@ io.on("connection", async (socket) => {
     console.log(`New connection: roomId=${roomId}, userId=${userId}`);
 
     if (!roomId || !userId) {
+        console.log("Disconnectiong...");
         socket.disconnect();
         return;
     }
@@ -36,6 +39,7 @@ io.on("connection", async (socket) => {
     const room = await roomManager.getRoom(roomId);
 
     if (!room) {
+        console.log("Room not found, disconnectiong...");
         socket.disconnect();
         return;    
     }
@@ -67,7 +71,7 @@ io.on("connection", async (socket) => {
     }
 
     socket.on("load", async () => {
-        console.log("Sending room data: ", room);
+        console.log("Sending room data");
 
         await cleanDisconnectedCursors(roomId, room);
 
@@ -99,7 +103,7 @@ io.on("connection", async (socket) => {
             deleted: [],
         }
 
-        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_start: index });
+        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_after: room.blocks[index] });
     });
 
     socket.on("enter", async ({ cursor, target_id, register }: ActionPerformed) => {
@@ -122,7 +126,7 @@ io.on("connection", async (socket) => {
             deleted: [],
         }
 
-        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_start: index });
+        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_after: room.blocks[index] });
     });
 
     socket.on("backspace", async ({ cursor, register }: ActionPerformed) => {
