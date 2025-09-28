@@ -9,6 +9,9 @@ services:
     ports:
       - "9001:9001"
     volumes:
-      - ./data:/app/data
+      - data-volume:/app/data
     env_file:
       - .env
+
+volumes:
+  data-volume: {}
