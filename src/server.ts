@@ -83,57 +83,15 @@ io.on("connection", async (socket) => {
         socket.emit("init", { data });
     });
 
-    socket.on("change", async ({ cursor, target_id, register }: ActionPerformed) => {
+    socket.on("block:change", async ({ cursor, target_id, register }: ActionPerformed) => {
 
-        const { updated, created } = register;
-
-        const index = room.blocks.findIndex(block => block.id === target_id);
-
-        updateBlocks(room.blocks, updated ?? []);
-
-        createBlocks(room.blocks, created ?? [], index);
-
-        cursor = updateCursors(room, cursor, userId);
-
-        await roomManager.saveRoom(room);
-
-        const dispatch: Register = {
-            updated,
-            created,
-            deleted: [],
-        }
-
-        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_after: room.blocks[index] });
-    });
-
-    socket.on("enter", async ({ cursor, target_id, register }: ActionPerformed) => {
-
-        const { updated, created } = register;
+        const { updated, created, deleted } = register;
 
         const index = room.blocks.findIndex(block => block.id === target_id);
 
         updateBlocks(room.blocks, updated ?? []);
 
         createBlocks(room.blocks, created ?? [], index);
-
-        cursor = updateCursors(room, cursor, userId);
-
-        await roomManager.saveRoom(room);
-
-        const dispatch: Register = {
-            updated,
-            created,
-            deleted: [],
-        }
-
-        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_after: room.blocks[index] });
-    });
-
-    socket.on("backspace", async ({ cursor, register }: ActionPerformed) => {
-
-        const { updated, deleted } = register;
-
-        updateBlocks(room.blocks, updated ?? []);
 
         deleteBlocks(room.blocks, deleted ?? []);
 
@@ -143,32 +101,11 @@ io.on("connection", async (socket) => {
 
         const dispatch: Register = {
             updated,
-            created: [],
+            created,
             deleted,
         }
 
-        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch });
-    });
-
-    socket.on("delete", async ({ cursor, register }: ActionPerformed) => {
-
-        const { updated, deleted } = register;
-
-        updateBlocks(room.blocks, updated ?? []);
-
-        deleteBlocks(room.blocks, deleted ?? []);
-
-        cursor = updateCursors(room, cursor, userId);
-
-        await roomManager.saveRoom(room);
-
-        const dispatch: Register = {
-            updated,
-            created: [],
-            deleted,
-        }
-
-        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch });
+        socket.to(roomId).emit("change", { updatedCursors: [cursor], dispatch, create_after: room.blocks[index] });
     });
 
     socket.on("arrowChange", async ({ cursor }: ActionPerformed) => {
